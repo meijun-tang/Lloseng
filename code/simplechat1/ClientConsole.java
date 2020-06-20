@@ -68,13 +68,71 @@ public class ClientConsole implements ChatIF
     {
       BufferedReader fromConsole = 
         new BufferedReader(new InputStreamReader(System.in));
-      String message;
+      String message; String command;
 
       while (true) 
       {
         message = fromConsole.readLine();
-        client.handleMessageFromClientUI(message);
-      }
+        command = message.trim();
+        /**
+         * May be a command
+         */
+         if(command.compareTo("#quit") == 0) {
+             client.closeConnection();
+             break;
+         } else if (command.compareTo("#logoff") == 0) {
+             client.closeConnection();
+         } else if (command.startsWith("#sethost")) {
+             if (client.isConnected()) {
+                 System.out.println("ERROR: please logged off first.");
+             } else {
+                try {
+                    String host = command.substring(9);
+                    client.setHost(host.trim());
+                    System.out.println("Set host to " + host);
+                }
+                catch(Throwable t)
+                {   
+                  System.out.println("ERROR: host argument error");
+                }
+             }
+         } else if (command.startsWith("#setport")) {
+             if (client.isConnected()) {
+                 System.out.println("ERROR: please logged off first.");
+             } else {
+                String port = command.substring(10);
+                try {
+                    client.setPort(Integer.parseInt(port));
+                    System.out.println("Set port to " + port);
+                }
+                catch(Throwable t)
+                {   
+                  System.out.println("ERROR: port is not integer");
+                }
+             }
+         } else if (command.compareTo("#login") == 0) {
+             if (client.isConnected()) {
+                 System.out.println("ERROR: please logged off first.");
+             } else {
+                try {
+                    client.openConnection();
+                    System.out.println("Login Success");
+                }
+                catch(IOException ex)
+                {   
+                  System.out.println("ERROR: login failed");
+                  System.out.println(ex);
+                }
+             }
+         } else if (command.compareTo("#gethost") == 0) {
+             String host = client.getHost();
+             System.out.println(host);
+         } else if (command.compareTo("#getport") == 0) {
+             int port = client.getPort();
+             System.out.println(port);
+         } else 
+                client.handleMessageFromClientUI(message);
+        }
     } 
     catch (Exception ex) 
     {
