@@ -25,6 +25,7 @@ public class EchoServer extends AbstractServer
   final public static int DEFAULT_PORT = 5555;
   
   //Constructors ****************************************************
+  private boolean serverClosed = true;
   
   /**
    * Constructs an instance of the echo server.
@@ -51,13 +52,30 @@ public class EchoServer extends AbstractServer
     System.out.println("Message received: " + msg + " from " + client);
     this.sendToAllClients(msg);
   }
+
+  /**
+   * This method handles any messages received from the client.
+   *
+   * @param msg The message received from the client.
+   * @param client The connection from which the message originated.
+   */
+  public void handleMessageFromClientUI
+    (Object msg)
+  {
+    System.out.println("Message received: " + msg + " from Console");
+    this.sendToAllClients("SERVER MSG>" + msg);
+  }
     
+  public boolean isClosed() {
+	return serverClosed;
+  }  
   /**
    * This method overrides the one in the superclass.  Called
    * when the server starts listening for connections.
    */
   protected void serverStarted()
   {
+	serverClosed = false;
     System.out.println
       ("Server listening for connections on port " + getPort());
   }
@@ -70,6 +88,17 @@ public class EchoServer extends AbstractServer
   {
     System.out.println
       ("Server has stopped listening for connections.");
+  }
+  /** 
+   * Hook method called when the server is clased.
+   * The default implementation does nothing. This method may be
+   * overriden by subclasses. When the server is closed while still
+   * listening, serverStopped() will also be called.
+   */
+  protected void serverClosed() {
+	serverClosed = true;;
+    System.out.println
+      ("Server has closed all connections.");
   }
 
   /** 
@@ -96,7 +125,7 @@ public class EchoServer extends AbstractServer
     System.out.println
       ("A client disconnected.");
   }
-  
+
   //Class methods ***************************************************
   
   /**
