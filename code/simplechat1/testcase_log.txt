@@ -362,4 +362,16 @@ Alice has logged on.
 #quit
 Connection closed.
 
+Testcase 2018
+System: Simple Chat                Phase: 2
+Different platform tests
+Severity: 1
 
+The same as before.
+
+Testcase 2019
+System: Simple Chat                Phase: 2
+Interaction between different platforms
+Severity: 1
+
+The same as before.
