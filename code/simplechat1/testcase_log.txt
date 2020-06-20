@@ -1,6 +1,6 @@
-Name: meijun-tang
-Student Number:
-Email:
+Name: Meijun Tang
+Student Number: 300062224
+Email: mtang032@uottawa.ca
 
 Testcase 2001
 
