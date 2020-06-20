@@ -39,7 +39,11 @@ public class EchoServer extends AbstractServer
 
   
   //Instance methods ************************************************
-  
+ 
+  final public void doclose() throws IOException {
+      this.sendToAllClients("SERVER SHUTTING DOWN! DISCONNECTING!");
+      this.close();
+  }
   /**
    * This method handles any messages received from the client.
    *
@@ -50,6 +54,7 @@ public class EchoServer extends AbstractServer
     (Object msg, ConnectionToClient client)
   {
     String message = msg.toString();
+    System.out.println("Message received: " + message + " from " + client.getInfo("id"));
     if (message.startsWith("#login")) {
         try
         {
@@ -58,7 +63,8 @@ public class EchoServer extends AbstractServer
             } else {
                 String id = message.substring(6);
                 client.setInfo("id", id.trim());
-                client.sendToClient("Login success.");
+                System.out.println(client.getInfo("id") + " has logged on.");
+                client.sendToClient(client.getInfo("id") + " has logged on.");
             }
         }
         catch (Exception ex) 
@@ -72,9 +78,8 @@ public class EchoServer extends AbstractServer
             }
         }
     } else {
-        System.out.println("Message received: " + message + " from " + client);
         if (client.getInfo("id") != null) {
-            this.sendToAllClients(client.getInfo("id") + ": " + message);
+            this.sendToAllClients(client.getInfo("id") + ">" + message);
         } else {
             try 
             {
@@ -98,7 +103,7 @@ public class EchoServer extends AbstractServer
     (Object msg)
   {
     System.out.println("Message received: " + msg + " from Console");
-    this.sendToAllClients("SERVER MSG>" + msg);
+    this.sendToAllClients("SERVER MESSAGE>" + msg);
   }
     
   public boolean isClosed() {
@@ -123,6 +128,7 @@ public class EchoServer extends AbstractServer
   {
     System.out.println
       ("Server has stopped listening for connections.");
+    this.sendToAllClients("WARNING - Server has stopped listening for connections.");
   }
   /** 
    * Hook method called when the server is clased.
@@ -143,7 +149,7 @@ public class EchoServer extends AbstractServer
    */
   protected void clientConnected(ConnectionToClient client) {
     System.out.println
-      ("A new client connected.");
+      ("A new client is attempting to connect to the server.");
   }
 
   /** 
@@ -158,7 +164,9 @@ public class EchoServer extends AbstractServer
   synchronized protected void clientException(
     ConnectionToClient client, Throwable exception) {
     System.out.println
-      ("Client " + client.getInfo("id") + " disconnected.");
+      (client.getInfo("id") + " has disconnected.");
+    this.sendToAllClients
+      (client.getInfo("id") + " has disconnected.");
   }
 
   //Class methods ***************************************************

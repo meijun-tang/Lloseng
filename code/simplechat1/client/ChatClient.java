@@ -104,8 +104,18 @@ public class ChatClient extends AbstractClient
    */
   protected void connectionException(Exception exception) {
       clientUI.display
-        ("The server has shut down, quitting...");
-      quit();
-  }  
+        ("Abnormal termination of connection.");
+  }
+
+    /** 
+     * Hook method called after the connection has been closed. The default
+     * implementation does nothing. The method may be overriden by subclasses to
+     * perform special processing such as cleaning up and terminating, or
+     * attempting to reconnect.
+     */
+   protected void connectionClosed() {
+      clientUI.display
+        ("Connection closed.");
+   }    
 }
 //End of ChatClient class

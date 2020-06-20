@@ -72,12 +72,12 @@ public class ServerConsole implements ChatIF
          * May be a command
          */
          if(command.compareTo("#quit") == 0) {
-             client.close();
+             client.doclose();
              break;
          } else if (command.compareTo("#stop") == 0) {
             client.stopListening();
          } else if (command.compareTo("#close") == 0) {
-            client.close();
+            client.doclose();
          } else if (command.startsWith("#setport")) {
              if (!client.isClosed()) {
                  System.out.println("ERROR: please close first.");
@@ -85,7 +85,7 @@ public class ServerConsole implements ChatIF
                 String port = command.substring(9);
                 try {
                     client.setPort(Integer.parseInt(port));
-                    System.out.println("Set port to " + port);
+                    System.out.println("Port set to: " + port);
                 }
                 catch(Throwable t)
                 {   

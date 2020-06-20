@@ -78,7 +78,9 @@ public class ClientConsole implements ChatIF
          * May be a command
          */
          if(command.compareTo("#quit") == 0) {
-             client.closeConnection();
+             if (client.isConnected()) {
+                client.closeConnection();
+             }
              break;
          } else if (command.compareTo("#logoff") == 0) {
              client.closeConnection();
@@ -89,7 +91,7 @@ public class ClientConsole implements ChatIF
                 try {
                     String host = command.substring(9);
                     client.setHost(host.trim());
-                    System.out.println("Set host to " + host);
+                    System.out.println("Host set to: " + host);
                 }
                 catch(Throwable t)
                 {   
@@ -100,23 +102,23 @@ public class ClientConsole implements ChatIF
              if (client.isConnected()) {
                  System.out.println("ERROR: please logged off first.");
              } else {
-                String port = command.substring(10);
+                String port = command.substring(9);
                 try {
                     client.setPort(Integer.parseInt(port));
-                    System.out.println("Set port to " + port);
+                    System.out.println("Port set to: " + port);
                 }
                 catch(Throwable t)
                 {   
                   System.out.println("ERROR: port is not integer");
                 }
              }
-         } else if (command.compareTo("#login") == 0) {
+         } else if (command.startsWith("#login")) {
              if (client.isConnected()) {
                  System.out.println("ERROR: please logged off first.");
              } else {
                 try {
                     client.openConnection();
-                    System.out.println("Login Success");
+                    client.handleMessageFromClientUI(message);
                 }
                 catch(IOException ex)
                 {   
@@ -149,7 +151,7 @@ public class ClientConsole implements ChatIF
    */
   public void display(String message) 
   {
-    System.out.println("> " + message);
+    System.out.println(message);
   }
 
   
@@ -171,7 +173,7 @@ public class ClientConsole implements ChatIF
     }
     catch(ArrayIndexOutOfBoundsException e)
     {
-      System.out.println("Please provide login id");
+      System.out.println("ERROR - No login ID specified.  Connection aborted.");
       return;
     }
 
