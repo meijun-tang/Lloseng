@@ -1,0 +1,365 @@
+Name: meijun-tang
+Student Number:
+Email:
+
+Testcase 2001
+
+$ java EchoServer
+Server listening for connections on port 5555
+
+Testcase 2002
+
+$ java ClientConsole
+ERROR - No login ID specified.  Connection aborted.
+
+Testcase 2003
+
+$ java ClientConsole Peter
+Error: Can't setup connection! Terminating client.
+
+Testcase 2004
+
+$ java EchoServer
+Server listening for connections on port 5555
+A new client is attempting to connect to the server.
+Message received: #login Peter from null
+Peter has logged on.
+
+$ java ClientConsole Peter
+Peter has logged on.
+
+Testcase 2005
+
+$ java EchoServer
+Server listening for connections on port 5555
+A new client is attempting to connect to the server.
+Message received: #login Peter from null
+Peter has logged on.
+Message received: Hi, I'm Peter. from Peter
+
+$ java ClientConsole Peter
+Peter has logged on.
+Hi, I'm Peter.
+Peter>Hi, I'm Peter.
+
+Testcase 2006
+
+$ java ServerConsole
+Server listening for connections on port 5555
+A new client is attempting to connect to the server.
+Message received: #login Peter from null
+Peter has logged on.
+A new client is attempting to connect to the server.
+Message received: #login Bob from null
+Bob has logged on.
+Message received: Hi, I am Peter from Peter
+Message received: Hi, I am Bob from Bob
+Hi, I am Server
+Message received: Hi, I am Server from Console
+
+$ java ClientConsole Peter
+Peter has logged on.
+Hi, I am Peter
+Peter>Hi, I am Peter
+Bob>Hi, I am Bob
+SERVER MESSAGE>Hi, I am Server
+
+
+$ java ClientConsole Bob
+Bob has logged on.
+Peter>Hi, I am Peter
+Hi, I am Bob
+Bob>Hi, I am Bob
+SERVER MESSAGE>Hi, I am Server
+
+Testcase 2007
+
+$ java ServerConsole
+Server listening for connections on port 5555
+#quit
+Server has closed all connections.
+Server has stopped listening for connections.
+
+Testcase 2008
+
+$ java ServerConsole
+Server listening for connections on port 5555
+A new client is attempting to connect to the server.
+Message received: #login Peter from null
+Peter has logged on.
+#stop
+Server has stopped listening for connections.
+Hi, data echoing works
+Message received: Hi, data echoing works from Console
+Message received: Hi, Peter is online from Peter
+#start
+Start success
+Server listening for connections on port 5555
+A new client is attempting to connect to the server.
+Message received: #login Bob from null
+Bob has logged on.
+
+$ java ClientConsole Peter
+Peter has logged on.
+WARNING - Server has stopped listening for connections.
+SERVER MESSAGE>Hi, data echoing works
+Hi, Peter is online
+Peter>Hi, Peter is online
+
+$ java ClientConsole Bob
+Bob has logged on.
+
+Testcase 2009
+System: Simple Chat                Phase: 2 and 3
+Server close command check
+Severity: 2
+
+$ java ServerConsole
+Server listening for connections on port 5555
+A new client is attempting to connect to the server.
+Message received: #login Peter from null
+Peter has logged on.
+#stop
+Server has stopped listening for connections.
+#close
+Server has closed all connections.
+
+$ java ClientConsole Peter
+Peter has logged on.
+WARNING - Server has stopped listening for connections.
+SERVER SHUTTING DOWN! DISCONNECTING!
+Abnormal termination of connection.
+
+
+Testcase 2009
+System: Simple Chat                Phase: 2 and subsequent
+Server restart
+Severity: 1
+
+$ java ServerConsole
+Server listening for connections on port 5555
+A new client is attempting to connect to the server.
+Message received: #login Peter from null
+Peter has logged on.
+#close
+Server has stopped listening for connections.
+Server has closed all connections.
+#start
+Start success
+Server listening for connections on port 5555
+A new client is attempting to connect to the server.
+Message received: #login Peter from null
+Peter has logged on.
+A new client is attempting to connect to the server.
+Message received: #login Bob from null
+Bob has logged on.
+
+$ java ClientConsole Peter
+Peter has logged on.
+SERVER SHUTTING DOWN! DISCONNECTING!
+Abnormal termination of connection.
+#login
+Login Success
+#login Peter
+Peter has logged on.
+
+$ java ClientConsole Bob
+Bob has logged on.
+
+
+Testcase 2010
+System: Simple Chat                Phase: 2 and subsequent
+Client termination command check
+Severity: 1
+
+$ java ClientConsole Bob
+Bob has logged on.
+SERVER SHUTTING DOWN! DISCONNECTING!
+Abnormal termination of connection.
+#quit
+
+Testcase 2011
+System: Simple Chat                Phase: 2 and subsequent
+Client logoff check
+Severity: 1
+
+$ java ServerConsole
+Server listening for connections on port 5555
+A new client is attempting to connect to the server.
+Message received: #login Peter from null
+Peter has logged on.
+Peter has disconnected.
+
+java ClientConsole Peter
+Peter has logged on.
+#logoff
+Connection closed.
+#quit
+
+Testcase 2012
+System: Simple Chat                Phase: 2 and subsequent
+Client host and port setup commands check
+Severity: 1
+
+$ java ClientConsole Peter
+Peter has logged on.
+#logoff
+Connection closed.
+#sethost 192.168.0.2
+Host set to: 192.168.0.2
+#setport 1234
+Port set to: 1234
+#quit
+
+Testcase 2013
+System: Simple Chat                Phase: 2 and subsequent
+Starting a server on a non-default port
+Severity: 1
+
+$ java ServerConsole 1234
+Server listening for connections on port 1234
+
+Testcase 2014
+System: Simple Chat                Phase: 2 and subsequent
+Connecting a client to a non-default host or port
+Severity: 1
+
+
+$ java ServerConsole 1234
+Server listening for connections on port 1234
+A new client is attempting to connect to the server.
+Message received: #login Peter from null
+Peter has logged on.
+
+$ java ClientConsole Peter localhost 1234
+Peter has logged on.
+
+Testcase 2015
+System: Simple Chat                Phase: 2
+Multiple remote clients disconnections and reconnections
+Severity: 1
+
+$ java ServerConsole
+Server listening for connections on port 5555
+A new client is attempting to connect to the server.
+Message received: #login Peter from null
+Peter has logged on.
+A new client is attempting to connect to the server.
+Message received: #login Bob from null
+Bob has logged on.
+It's Server
+Message received: It's Server from Console
+Message received: It's Peter from Peter
+Message received: It's Bob from Bob
+#close
+Server has stopped listening for connections.
+Server has closed all connections.
+#setport 6666
+Port set to: 6666
+#start
+Start success
+Server listening for connections on port 6666
+A new client is attempting to connect to the server.
+Message received: #login Peter from null
+Peter has logged on.
+A new client is attempting to connect to the server.
+Message received: #login Bob from null
+Bob has logged on.
+#quit
+Server has stopped listening for connections.
+Server has closed all connections.
+
+$ java ClientConsole Peter 192.168.0.2 
+Peter has logged on.
+SERVER MESSAGE>It's Server
+It's Peter
+Peter>It's Peter
+Bob>It's Bob
+SERVER SHUTTING DOWN! DISCONNECTING!
+Abnormal termination of connection.
+#setport 6666
+Port set to: 6666
+#login Peter
+Peter has logged on.
+SERVER SHUTTING DOWN! DISCONNECTING!
+Abnormal termination of connection.
+
+$java ClientConsole Bob 192.168.0.2
+Bob has logged on.
+SERVER MESSAGE>It's Server
+Peter>It's Peter
+It's Bob
+Bob>It's Bob
+SERVER SHUTTING DOWN! DISCONNECTING!
+Abnormal termination of connection.
+#setport 6666
+Port set to: 6666
+#login Bob
+Bob has logged on.
+SERVER SHUTTING DOWN! DISCONNECTING!
+Abnormal termination of connection.
+
+Testcase 2016
+System: Simple Chat                Phase: 2 and subsequent
+Client changing hosts
+Severity: 1
+
+$ java ServerConsole
+Server listening for connections on port 5555
+A new client is attempting to connect to the server.
+Message received: #login Peter from null
+Peter has logged on.
+Peter has disconnected.
+
+$ java ServerConsole
+Server listening for connections on port 5555
+A new client is attempting to connect to the server.
+Message received: #login Peter from null
+Peter has logged on.
+
+$ java ClientConsole Peter 192.168.0.2 
+Peter has logged on.
+#logoff
+Connection closed.
+#sethost 192.168.0.3
+Host set to: 192.168.0.3
+#login Peter
+Peter has logged on.
+
+Testcase 2017
+System: Simple Chat                Phase: 2 and subsequent
+Client quitting or logging off a server with multiple connections
+Severity: 1
+
+$ java ServerConsole
+Server listening for connections on port 5555
+A new client is attempting to connect to the server.
+Message received: #login Peter from null
+Peter has logged on.
+A new client is attempting to connect to the server.
+Message received: #login Bob from null
+Bob has logged on.
+A new client is attempting to connect to the server.
+Message received: #login Alice from null
+Alice has logged on.
+Alice has disconnected.
+Bob has disconnected.
+
+$ java ClientConsole Peter 
+Peter has logged on.
+Alice has disconnected.
+Bob has disconnected.
+
+
+$ java ClientConsole Bob 
+Bob has logged on.
+Alice has disconnected.
+#logoff
+Connection closed.
+
+$ java ClientConsole Alice
+Alice has logged on.
+#quit
+Connection closed.
+
+
